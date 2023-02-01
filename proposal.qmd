@@ -1,5 +1,5 @@
 ---
-title: "Project title"
+title: "Collegiate Sports Budget Analysis"
 subtitle: "Proposal"
 format: html
 editor: visual
@@ -16,7 +16,11 @@ library(tidyverse)
 
 A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
 
-Make sure to load the data and use inline code for some of this information.
+```{r load-data}
+sports <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-03-29/sports.csv')
+```
+
+This data on collegiate sports budgets comes from Equity in Athletics Data Analysis. It has `r nrow(sports)` rows and `r ncol(sports)` columns, including numeric and categorical variables. We chose the dataset because it has a large number of variables that will be interesting to analyze, and because we think the topic of collegiate sports budgets is interesting and worthy of exploration.
 
 # Questions
 
