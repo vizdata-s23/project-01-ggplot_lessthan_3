@@ -26,6 +26,10 @@ This data on collegiate sports budgets comes from Equity in Athletics Data Analy
 
 The two questions you want to answer.
 
-# Analysis plan
+1.  How did the relationship between expenditure and participation of collegiate sports change over time for different genders?
+
+2.  Which major sports of different type of colleges have equal revenue for men and women?
+
+    Analysis plan
 
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
