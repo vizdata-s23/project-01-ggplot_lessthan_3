@@ -42,7 +42,7 @@ For our second question, we plan to investigate how total aggregate expenditure 
 #| label: Question-2-filtering-data
 sports = sports |>
   filter(sector_name == "Private nonprofit, 4-year or above" | 
-           sector_name == "Private nonprofit, 4-year or above")
+           sector_name == "Public, 4-year or above")
 ```
 
 The code above is an example of how we plan to filter our data for only those observations with sector name as "Private nonprofit, 4-year or above" or "Private nonprofit, 4-year or above".
