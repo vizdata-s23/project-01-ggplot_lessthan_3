@@ -1,3 +1,3 @@
 # data dictionary
 
-|--variable--| |--class--| |--description--|
+|variable| |class| |description|
