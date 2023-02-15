@@ -1,3 +1,3 @@
-# data
+# data dictionary
 
-Place dataset(s) here.
+|--variable--| |--class--| |--description--|
