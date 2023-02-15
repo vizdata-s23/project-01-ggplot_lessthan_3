@@ -15,18 +15,14 @@ library(tidyverse)
 
 ## Dataset
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
-
 ```{r load-data}
 #| message: false
-sports <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-03-29/sports.csv')
+sports <- readr::read_csv('data/data.csv')
 ```
 
 This data on collegiate sports budgets comes from Equity in Athletics Data Analysis. It has `r nrow(sports)` rows and `r ncol(sports)` columns, including numeric and categorical variables. The dataset has information on most colleges in the US, regardless of sports division, and consists of metrics such as revenue and expenditure for each sport at the school from 2015-2019. We chose the dataset because it has a large number of variables that will be interesting to analyze, and because, as college sports fanatics, we think the topic of collegiate sports budgets is interesting, relevant to us, and worthy of exploration. The variables we are primarily concerned with are `exp_men`, the school expenditure on men's sports, `rev_men`, revenue generated from men's sports for the school, `exp_women`, the school expenditure on women's sports, `rev_woman,` revenue generated from women's sports for the school, `total_exp_menwomen`, the total expenditure on men and women's teams for a certain sport, `year`, year of athletics, and `sector_name,` school type like "Private 4 year" for example.
 
 ## Questions
-
-The two questions you want to answer.
 
 1.  How did the relationship between expenditure and revenue of collegiate sports change over time for different genders?
 
