@@ -35,7 +35,6 @@ library(scales)
 library(knitr)
 ```
 
-
 ## Question 1: Title that relates to the question you're answering
 
 ### Introduction
@@ -253,7 +252,7 @@ plot2
 
 ### Discussion
 
-This first chart reveals several key finding about how spending and revenue differ for men's and women’s college sports. First, men's sports are, on average both spending and earning far more than women's sports. Men's sports earn on average about x more than women's sports, and spend about y more. This gap was persistent from 2015 to 2019, in fact even slightly growing across this time period. We were surprised to see that the gap was this dramatic, especially given Title IX spending rules; we were also surprised that the gap grew during a time period where so many people have been focused on equity in sports. A second finding evident in this chart is that men's sports, on average, earn more than they spend, while the opposite is true for women's sports. This positive gap in earning is also greater in men's sports than the respective negative gap in earning for women's, a finding which is also consistent across years.
+This first chart reveals several key finding about how spending and revenue differ for men's and women's college sports. First, men's sports are, on average both spending and earning far more than women's sports. Men's sports earn on average about x more than women's sports, and spend about y more. This gap was persistent from 2015 to 2019, in fact even slightly growing across this time period. We were surprised to see that the gap was this dramatic, especially given Title IX spending rules; we were also surprised that the gap grew during a time period where so many people have been focused on equity in sports. A second finding evident in this chart is that men's sports, on average, earn more than they spend, while the opposite is true for women's sports. This positive gap in earning is also greater in men's sports than the respective negative gap in earning for women's, a finding which is also consistent across years.
 
 From the two graphs, we can see that the relationship between profit and expenditure differs greatly for men and women. For men, there appears to be a moderate positive relationship between profit and expenditure while for women there appears to be a moderate negative relationship between profit and expenditure. This trend is probably because although colleges spend millions of dollars in funding for women collegiate sport programs, these women collegiate sport programs do not generate enough revenue for positive profit. This is most likely due to women collegiate programs obtaining less publicity in corporate sponsorship and media viewership, according to the NPR article on unequal profits. It is reasonably expected that the relationship between profit and expenditure is positive as shown in men's collegiate sports programs; however, this is not the case for women collegiate sports programs since external uncontrollable factors such as media viewership and corporate sponsorship influence how much revenue and thus profit is generated from advertisement, ticket sales, and sponsorships.
 
@@ -334,9 +333,9 @@ ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference),
 
 ```{r}
 #| label: Question-2-Part-2-data-wrangling
-q2_2 <- sports %>% 
-  filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
-  select(sports, sector_name, total_exp_menwomen) %>% 
+q2_2 <- sports |>
+  filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) |> 
+  select(sports, sector_name, total_exp_menwomen) |> 
   #renaming sector name values, so thatt it will look nice on the graph
   mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) 
 

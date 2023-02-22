@@ -192,7 +192,7 @@ plot1
 plot2
 ```
 
-## Code
+## Question 2
 
 -   or bullet points
 
@@ -216,14 +216,14 @@ or text in two columns $^*$
 ## Plots
 
 ```{r}
-#| label: recode-species
-#| echo: false
+#| label: Question-2-Part-2-data-wrangling
 
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
+q2_2 <- sports %>% 
+  filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
+  select(sports, sector_name, total_exp_menwomen) %>% 
+  #renaming sector name values, so thatt it will look nice on the graph
+  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) 
 
-penguins_modified <- penguins %>%
-  mutate(species = fct_other(species, keep = "Adelie"))
 ```
 
 ```{r}
