@@ -1,5 +1,5 @@
 ---
-title: "Project title"
+title: "Collegiate Sports Budget Analysis"
 subtitle: "STA/ISS 313 - Spring 2023 - Project 1"
 author: "ggplot<3"
 title-slide-attributes:
@@ -22,9 +22,6 @@ library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
 library(gt)
-library(plyr)
-library(patchwork)
-library(scales)
 ```
 
 ```{r}
@@ -35,9 +32,9 @@ library(scales)
 knitr::opts_chunk$set(
   fig.retina = 3, 
   dpi = 300, 
-  fig.width = 9, 
+  fig.width = 7, 
   fig.asp = 0.618, 
-  out.width = "100%"
+  out.width = "70%"
   )
 ```
 
@@ -61,13 +58,14 @@ sports <- read.csv("data/data.csv")
 
 How do spending, revenue, and profit compare for men's and women's college sports, and how (if at all) did that relationship change from 2015 to 2019?
 
-## Profit vs. Expenditure for Gender and Sports
+## Profit vs Expenditure: Women 
 
 ```{r}
 #| label: Q1-plot2-data-wrangling
 #| message: false
 #| echo: false
-#| layout-ncol: 2
+library(tidyverse)
+library(patchwork)
 
 # filter out NA values
 sports_mini = sports |>
@@ -129,11 +127,11 @@ sports_pivot_men <- sports_pivot_men |>
       )
   ) 
 
-cors <- ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
+cors <- plyr::ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
 
 # scatter plot for women
 plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
-  geom_point(alpha = 0.6) +
+  geom_point(alpha = 0.85) +
   geom_smooth(method = "lm", color = "black") +
   geom_hline(yintercept = 0, linetype = 2) +
   labs(
@@ -152,7 +150,7 @@ plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
   scale_x_continuous(breaks = c(0e+00, 2e+06, 4e+06, 6e+06),
                      labels = c("$0M", "$2M", "$4M", "$6M")) +
   scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
-  theme_minimal() +
+  theme_minimal() + 
   theme(
     legend.position = c(0.9, 0.9),
     legend.box.background = element_rect(fill = "white", color = "black")
@@ -160,7 +158,7 @@ plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
 
 # scatter plot for men
 plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
-  geom_point(alpha = 0.6) +
+  geom_point(alpha = 0.86) +
   geom_smooth(method = "lm", color = "black") +
   geom_hline(yintercept = 0, linetype = 2) +
   labs(
@@ -188,6 +186,12 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
 plot1 
 ```
 
+## Profit vs Expenditure: Men 
+
+```{r}
+plot2
+```
+
 ## Code
 
 -   or bullet points
@@ -209,64 +213,62 @@ or text in two columns $^*$
 \[\*\] And add footnotes
 :::
 
-## Code
+## Plots
 
 ```{r}
-#| label: boring-regression
+#| label: recode-species
+#| echo: false
 
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
+# In this chunk I'm doing a bunch of analysis that I don't want to present 
+# in my slides. But I need the resulting data frame for a plot I want to present.
+
+penguins_modified <- penguins %>%
+  mutate(species = fct_other(species, keep = "Adelie"))
 ```
 
-## Total Expenditures on Basketball vs. Football
+```{r}
+#| label: plot-penguins
+#| echo: false
+#| warning: false
+#| fig-alt: |
+#|   Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all 
+#|   the others combined together. There is a relatively strong, positive 
+#|   relationship between the two variables. The Adelie penguins are clustered 
+#|   together but they don't exhibit a different trend than the rest of the 
+#|   penguins.
+
+# Uses modified penguins dataset from previous chunk
+# Play around with height and width until you're happy with the look
+
+ggplot(
+  penguins_modified, 
+  aes(x = flipper_length_mm, y = body_mass_g, color = species)
+  ) +
+  geom_point() + 
+  theme_minimal()
+```
+
+## Plot and text
 
 ::: columns
-::: {.column width="30%"}
--   The median expenditure of public universities on football is less than that of private universities.
-
--   However, there are multiple outliers in public universities that spend more on football than private ones, which may be attributed to their success.
-
--   Public universities have a bit wider range of expenditure on basketball than private universities, but there is no significant difference in their median expenditure.
+::: {.column width="50%"}
+-   Some text
+-   goes here
 :::
 
-::: {.column width="70%"}
+::: {.column width="50%"}
 ```{r}
-#| label: Question 2 Part 2 data wrangling
 #| warning: false
 #| out-width: "100%"
 #| fig-width: 4
 #| echo: false
 
-q2_2 <- sports %>% 
-  filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
-  select(sports, sector_name, total_exp_menwomen) %>% 
-  #renaming sector name values, so thatt it will look nice on the graph
-  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) 
+# See how I changed out-width and fig-width from defaults
+# to make the figure bigger
 
-#Q2-2 visualization
-ggplot(
-  q2_2, 
-  aes(y = total_exp_menwomen, color = sector_name)
-) +
-  geom_boxplot() + #creating a boxplot
-  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M", scale = 1e-6)) + #fixing the y axis labels
-  facet_wrap(~ sports, strip.position = "bottom") + #facet wrapping by sports
-  theme_minimal() +
-  labs( 
-    y = "Total expenditure",
-    title = "Total Expenditures of Private and Public Universities", 
-    subtitle = "On Basketball and Football in 2015-2019"
-  ) +
-  theme(
-    axis.text.x=element_blank(),
-    axis.ticks.x = element_blank(),
-    legend.position = c(0.2, 0.8),
-    legend.box.background = element_rect(fill = "white",
-                                         color = "white"),
-    legend.title = element_blank()
-  ) 
+ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
+  geom_boxplot() +
+  theme_minimal()
 ```
 :::
 :::
