@@ -36,7 +36,7 @@ After investigating the differences in revenue and expenditure for men and women
 library(tidyverse)
 library(plyr)
 library(patchwork)
-
+sports <- read.csv("data/data.csv")
 # filter out NA values
 sports_mini = sports |>
   filter(!is.na(exp_men), !is.na(exp_women), !is.na(rev_men), !is.na(rev_women)) 
@@ -172,7 +172,7 @@ plot1
 plot2
 ```
 
-###  Discussion
+### Discussion
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
 
@@ -199,3 +199,57 @@ Interestingly, the relationship between profit and expenditure for basketball is
 ### Discussion
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
+
+```{r}
+library(tidyverse)
+sports <- read.csv("data/data.csv")
+library(janitor)
+class_sports<- sports %>% 
+  filter(classification_code== 1) 
+
+d1_priv_pub <- class_sports %>% 
+  group_by(sports, sector_name) %>% 
+  mutate(mean_exp = mean(total_exp_menwomen, na.rm = TRUE),
+         mean_rev = mean(total_rev_menwomen, na.rm = TRUE),
+         profit = mean_rev - mean_exp) %>% 
+  ungroup()
+
+priv_pub <- d1_priv_pub %>% 
+  filter(year == 2015) %>% 
+  select(sports, mean_exp, mean_rev, profit, sector_name) %>% 
+  distinct() %>% 
+  mutate(mean_exp = ifelse(sector_name == "Public, 4-year or above", -mean_exp,
+                           mean_exp),
+         mean_rev = ifelse(sector_name == "Public, 4-year or above", -mean_rev,
+                           mean_rev)) 
+rem <- c("Track and Field, Indoor", "Squash", "Track and Field, X-Country",
+         "Track and Field, Outdoor", "Other Sports",
+         "Synchronized Swimming", "Diving",
+         "Bowling", "Sailing", "Skiing", "Rifle", "Equestrian")
+pivot_priv <- priv_pub %>% 
+  select(mean_exp, sector_name, sports) %>% 
+  pivot_wider(names_from = sector_name,
+              values_from = mean_exp) %>% 
+  clean_names() %>% 
+  mutate(difference = public_4_year_or_above + 
+           private_nonprofit_4_year_or_above,
+         difference_abs = abs(difference)) %>% 
+  mutate(out_spend = ifelse(difference >0, "Private", "Public")) %>% 
+  filter(!(sports %in% rem))
+```
+
+```{r}
+library(scales)
+ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference), 
+                       fill = out_spend))+
+  geom_bar(stat= "identity")+
+    scale_x_continuous(labels = dollar_format(scale = 1e-6, prefix = "$", 
+                                            suffix = "M"))+
+  labs(x = "Difference in Expenditure",
+       y = "Sport",
+       fill = "Bigger Spender?",
+       title = "What Sports do Public and Private Division 1 Schools Outspend 
+       Each Other")+
+  scale_fill_viridis_d()+
+  theme_minimal()
+```
