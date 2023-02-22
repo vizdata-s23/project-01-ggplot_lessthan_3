@@ -243,7 +243,7 @@ The magnitude of the r-squared value 0.57 for women is slightly greater than 0.5
 
 Interestingly, the relationship between profit and expenditure for basketball is positive and stronger than the relationship between profit and expenditure for other sports where the relationship is negative. This makes sense because men's collegiate basketball is one of the most popular collegiate sport that generates enormous amounts of publicity and profit. However, for women, no matter the type of sport, the relationship between profit and expenditure is negative and similar. This similarity in trend for all sports for women shows that there might be some underlying gender discrimination and under-representation in terms of profitable opportunities in collegiate sports for women.
 
-## Question 2: What are the differences in sports expenditure between public and private universities?
+## Question 2: Differences in sports expenditure between public and private universities
 
 ## Introduction
 
