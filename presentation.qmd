@@ -94,10 +94,12 @@ plotdf_pivoted <- plotdf |>
     names_to = "category", 
     values_to = "amount"
   ) |>
-  mutate(gender = case_when(category == "mean_exp_men" | category == "mean_rev_men" ~ "Mens",
-                            category == "mean_exp_women" | category == "mean_rev_women" ~ "Womens"),
-         type = case_when(category == "mean_exp_men" | category == "mean_exp_women" ~ "Expenditure",
-                            category == "mean_rev_men" | category == "mean_rev_women" ~ "Revenue"))
+  mutate(gender = 
+           case_when(category == "mean_exp_men" | category == "mean_rev_men" ~ "Mens",
+                     category == "mean_exp_women" | category == "mean_rev_women" ~ "Womens"),
+         type = 
+           case_when(category == "mean_exp_men" | category == "mean_exp_women" ~ "Expenditure",
+                     category == "mean_rev_men" | category == "mean_rev_women" ~ "Revenue"))
 
 mensdata <- plotdf_pivoted |>
   filter(gender == "Mens")
@@ -108,11 +110,13 @@ womensdata <- plotdf_pivoted |>
 ```{r}
 #| label: Q1-plot1-graph
 ggplot() +
-  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), 
+  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type,
+                                        color = gender), 
              size = 3) +
   geom_line(data = mensdata, aes(x = year, y = amount, group = year), 
             linetype = "dashed", color = "#F8766D") +
-  geom_line(data = womensdata, aes(x = year, y = amount, group = year), linetype = "dashed", 
+  geom_line(data = womensdata, aes(x = year, y = amount, group = year),
+            linetype = "dashed", 
             color = "#00BFC4") +
   scale_y_continuous(labels = label_dollar(suffix = "K", scale = 1e-3)) +
   labs(title = "Colleges spend much more on, and earn much more from, men's sports",
@@ -189,7 +193,8 @@ sports_pivot_men <- sports_pivot_men |>
       )
   ) 
 
-cors <- plyr::ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
+cors <- plyr::ddply(sports_pivot, c("gender"), summarise,
+                    cor = round(cor(exp, profit), 2))
 
 # scatter plot for women
 plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
@@ -203,8 +208,8 @@ plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
     y = "Profit ($)",
     color = "Sport Type"
   ) +
-  annotate(geom = "label", x = 0.5e+06, y = 3000000, label = "r = -0.57", size = 5,
-           color = "black", fontface = 2) +
+  annotate(geom = "label", x = 0.5e+06, y = 3000000, label = "r = -0.57",
+           size = 5, color = "black", fontface = 2) +
   annotate(geom = "text", x = 8e+06, y = 500000, label = "Profit = 0") +
   coord_cartesian(clip = "off", ylim = c(-5100000, 4000000)) +
   scale_y_continuous(breaks = c(-5000000, -2500000, 0, 2500000),
@@ -230,8 +235,8 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
     y = "Profit ($)",
     color = "Sport Type"
   ) +
-  annotate(geom = "label", x = 1.2e+06, y = 2.5e+07, label = "r = 0.54", size = 5,
-           color = "black", fontface = 2) +
+  annotate(geom = "label", x = 1.2e+06, y = 2.5e+07, label = "r = 0.54",
+           size = 5, color = "black", fontface = 2) +
   annotate(geom = "text", x = 2e+07, y = 1.5e+06, label = "Profit = 0") +
   coord_cartesian(clip = "off", ylim = c(-5000000, 30000000)) +
   scale_x_continuous(breaks = c(0.0+00, 5.0e+06, 1.0e+07, 1.5e+07), 
@@ -346,7 +351,8 @@ ggplot(
   #creating a boxplot
   geom_boxplot() + 
   #fixing the y axis labels
-  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M", scale = 1e-6)) + 
+  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M",
+                                           scale = 1e-6)) + 
   #facet wrapping by sports
   facet_wrap(~ sports, strip.position = "bottom") + 
   theme_minimal() +
