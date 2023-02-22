@@ -262,7 +262,7 @@ Public universities tend to outperform private universities in football games. N
 
 ```{r}
 library(scales)
-# Question 2 Part 2 data wrangling
+#| label: Question 2 Part 2 data wrangling
 q2_2 <- sports %>% 
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
   select(sports, sector_name, total_exp_menwomen) %>% 
@@ -271,7 +271,8 @@ q2_2 <- sports %>%
 ```
 
 ```{r}
-# Question 2 Part 2 data visualization
+#| label: Question 2 Part 2 data visualization
+
 ggplot(
   q2_2, 
   aes(y = total_exp_menwomen, color = sector_name)

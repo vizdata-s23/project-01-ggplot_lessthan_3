@@ -224,36 +224,39 @@ glance(model)
 ## Plots
 
 ```{r}
-#| label: recode-species
-#| echo: false
 
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-
-penguins_modified <- penguins %>%
-  mutate(species = fct_other(species, keep = "Adelie"))
+library(scales)
+#| label: Question 2 Part 2 data wrangling
+q2_2 <- sports %>% 
+  filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
+  select(sports, sector_name, total_exp_menwomen) %>% 
+  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) #renaming sector name values, so thatt it will look nice on the graph
 ```
 
 ```{r}
-#| label: plot-penguins
-#| echo: false
-#| warning: false
-#| fig-alt: |
-#|   Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all 
-#|   the others combined together. There is a relatively strong, positive 
-#|   relationship between the two variables. The Adelie penguins are clustered 
-#|   together but they don't exhibit a different trend than the rest of the 
-#|   penguins.
-
-# Uses modified penguins dataset from previous chunk
-# Play around with height and width until you're happy with the look
+#| label: Question 2 Part 2 data visualization
 
 ggplot(
-  penguins_modified, 
-  aes(x = flipper_length_mm, y = body_mass_g, color = species)
+  q2_2, 
+  aes(y = total_exp_menwomen, color = sector_name)
+) +
+  geom_boxplot() + #creating a boxplot
+  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M", scale = 1e-6)) + #fixing the y axis labels
+  facet_wrap(~ sports, strip.position = "bottom") + #facet wrapping by sports
+  theme_minimal() +
+  labs( 
+    y = "Total expenditure",
+    title = "Total Expenditures of Private and Public Universities", 
+    subtitle = "On Basketball and Football in 2015-2019"
   ) +
-  geom_point() + 
-  theme_minimal()
+  theme(
+    axis.text.x=element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = c(0.2, 0.8),
+    legend.box.background = element_rect(fill = "white",
+                                         color = "white"),
+    legend.title = element_blank()
+  ) 
 ```
 
 ## Plot and text
