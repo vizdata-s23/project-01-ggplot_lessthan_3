@@ -32,9 +32,9 @@ library(gt)
 knitr::opts_chunk$set(
   fig.retina = 3, 
   dpi = 300, 
-  fig.width = 6, 
+  fig.width = 9, 
   fig.asp = 0.618, 
-  out.width = "70%"
+  out.width = "100%"
   )
 ```
 
@@ -186,7 +186,6 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
   )
 
 plot1 
-plot2
 ```
 
 ## Code
