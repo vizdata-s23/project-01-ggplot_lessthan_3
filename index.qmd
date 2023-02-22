@@ -30,6 +30,8 @@ After investigating the differences in revenue and expenditure for men and women
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
+
+
 ```{r}
 #| label: Q1-plot2-data-wrangling
 #| message: false
