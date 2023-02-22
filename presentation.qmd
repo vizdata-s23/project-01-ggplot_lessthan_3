@@ -22,6 +22,7 @@ library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
 library(gt)
+library(patchwork)
 ```
 
 ```{r}
@@ -128,8 +129,6 @@ ggplot() +
 #| label: Q1-plot2-data-wrangling
 #| message: false
 #| echo: false
-library(tidyverse)
-library(patchwork)
 
 # filter out NA values
 sports_mini = sports |>
@@ -182,7 +181,6 @@ sports_pivot_men <- sports_pivot |>
 
 # mutate sports with values Basketball or Other
 sports_pivot_men <- sports_pivot_men |>
-  filter(profit < 15000000) |>
   mutate(
     sports =
       case_when(
@@ -213,7 +211,7 @@ plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
                      labels = c("$-5M", "$-2.5M", "$0M", "$2.5M")) +
   scale_x_continuous(breaks = c(0e+00, 2e+06, 4e+06, 6e+06),
                      labels = c("$0M", "$2M", "$4M", "$6M")) +
-  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  scale_color_manual(values = c("#00BFC4", "#F8766D")) +
   theme_minimal() + 
   theme(
     legend.position = c(0.9, 0.9),
@@ -240,7 +238,7 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
                      labels = c("$0M", "$5M", "$10M", "$15M")) +
   scale_y_continuous(breaks = c(0.0+00, 1e+07, 2e+07, 3e+07, 4e+07), 
                      labels = c("$0M", "$10M", "$20M", "$30M", "$40M")) +
-  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  scale_color_manual(values = c("#00BFC4", "#F8766D")) +
   theme_minimal() +
   theme(
     legend.position = c(0.9, 0.9),
@@ -253,6 +251,8 @@ plot1
 ## Profit vs Expenditure: Men
 
 ```{r}
+#| label: Q1-plot2-plot
+#| message: false
 plot2
 ```
 
@@ -261,6 +261,7 @@ plot2
 How does the expenditure on sports differ between public and private Division I-FBS Universities?
 
 ## Difference in Mean Expenditure
+
 ```{r}
 #| label: Q2-plot1-visualization
 #| message: false
@@ -363,4 +364,3 @@ ggplot(
     legend.title = element_blank()
   ) 
 ```
-

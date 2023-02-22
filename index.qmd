@@ -171,7 +171,6 @@ sports_pivot_men <- sports_pivot |>
 
 # mutate sports with values Basketball or Other
 sports_pivot_men <- sports_pivot_men |>
-  filter(profit < 15000000) |>
   mutate(
     sports =
       case_when(
@@ -213,7 +212,7 @@ plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
                      labels = c("$-5M", "$-2.5M", "$0M", "$2.5M")) +
   scale_x_continuous(breaks = c(0e+00, 2e+06, 4e+06, 6e+06),
                      labels = c("$0M", "$2M", "$4M", "$6M")) +
-  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  scale_color_manual(values = c("#00BFC4", "#F8766D")) +
   theme_minimal() +
   theme(
     legend.position = c(0.9, 0.9),
@@ -240,7 +239,7 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
                      labels = c("$0M", "$5M", "$10M", "$15M")) +
   scale_y_continuous(breaks = c(0.0+00, 1e+07, 2e+07, 3e+07, 4e+07), 
                      labels = c("$0M", "$10M", "$20M", "$30M", "$40M")) +
-  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  scale_color_manual(values = c("#00BFC4", "#F8766D")) +
   theme_minimal() +
   theme(
     legend.position = c(0.9, 0.9),
@@ -255,11 +254,7 @@ plot2
 
 This first chart reveals several key finding about how spending and revenue differ for men's and women's college sports. First, men's sports are, on average both spending and earning far more than women's sports. Men's sports earn on average about x more than women's sports, and spend about y more. This gap was persistent from 2015 to 2019, in fact even slightly growing across this time period. We were surprised to see that the gap was this dramatic, especially given Title IX spending rules; we were also surprised that the gap grew during a time period where so many people have been focused on equity in sports. A second finding evident in this chart is that men's sports, on average, earn more than they spend, while the opposite is true for women's sports. This positive gap in earning is also greater in men's sports than the respective negative gap in earning for women's, a finding which is also consistent across years.
 
-From the two graphs, we can see that the relationship between profit and expenditure differs greatly for men and women. For men, there appears to be a moderate positive relationship between profit and expenditure while for women there appears to be a moderate negative relationship between profit and expenditure. This trend is probably because although colleges spend millions of dollars in funding for women collegiate sport programs, these women collegiate sport programs do not generate enough revenue for positive profit. This is most likely due to women collegiate programs obtaining less publicity in corporate sponsorship and media viewership, according to the NPR article on unequal profits. It is reasonably expected that the relationship between profit and expenditure is positive as shown in men's collegiate sports programs; however, this is not the case for women collegiate sports programs since external uncontrollable factors such as media viewership and corporate sponsorship influence how much revenue and thus profit is generated from advertisement, ticket sales, and sponsorships.
-
-The magnitude of the r-squared value 0.57 for women is slightly greater than 0.54 for men. This means that the relationship for profit and expenditure for women follow more of a linear relationship than for men. This can be due to women's collegiate sports often times displaying a consistent trend in generating low profits for an increase in expenditure because of the collegiate sports' industry of underlying gender bias and discrimination. This relationship for men is less linearly correlated and shows more spread because different schools and divisions will have more promising teams than other schools and divisions which influences the profit generated from expenditures.
-
-Interestingly, the relationship between profit and expenditure for basketball is positive and stronger than the relationship between profit and expenditure for other sports where the relationship is negative. This makes sense because men's collegiate basketball is one of the most popular collegiate sport that generates enormous amounts of publicity and profit. However, for women, no matter the type of sport, the relationship between profit and expenditure is negative and similar. This similarity in trend for all sports for women shows that there might be some underlying gender discrimination and under-representation in terms of profitable opportunities in collegiate sports for women.
+We can see that the relationship between profit and expenditure differs greatly for men and women. For men, there appears to be a moderate positive relationship between profit and expenditure while for women there appears to be a moderate negative relationship between profit and expenditure. This trend is probably because women collegiate programs obtain less publicity in corporate sponsorship and media viewership and thus less revenue, according to the NPR article on unequal profits. The magnitude of the r-squared value 0.57 for women is slightly greater than 0.54 for men. This means that the relationship for profit and expenditure for women follow more of a linear relationship than for men. The relationship between profit and expenditure for basketball is positive and stronger than the relationship between profit and expenditure for other sports where the relationship is negative because men's collegiate basketball is one of the most popular collegiate sport that generates enormous amounts of publicity and profit. However, for women, no matter the type of sport, the relationship between profit and expenditure is negative and similar. This similarity in trend for all sports for women shows that there might be some underlying gender discrimination and under-representation in terms of profitable opportunities in collegiate sports for women.
 
 ## Question 2: Differences in sports expenditure between public and private universities
 
