@@ -120,7 +120,7 @@ ggplot() +
             color = "#00BFC4") +
   scale_y_continuous(labels = label_dollar(suffix = "K", scale = 1e-3)) +
   labs(title = "Colleges spend much more on, and earn much more from, men's sports",
-       y = "",
+       y = "Expenditure and Revenue",
        x = "Year",
        color = "Gender",
        shape = "Type") +
