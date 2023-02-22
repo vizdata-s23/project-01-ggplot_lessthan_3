@@ -266,7 +266,7 @@ library(scales)
 q2_2 <- sports %>% 
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
   select(sports, sector_name, total_exp_menwomen) %>% 
-  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public"))
+  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) #renaming sector name values, so thatt it will look nice on the graph
 
 ```
 
@@ -276,11 +276,11 @@ ggplot(
   q2_2, 
   aes(y = total_exp_menwomen, color = sector_name)
 ) +
-  geom_boxplot() +
-  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M", scale = 1e-6)) + 
-  facet_wrap(~ sports, strip.position = "bottom") + 
+  geom_boxplot() + #creating a boxplot
+  scale_y_continuous(labels = label_number(prefix = "$", suffix = "M", scale = 1e-6)) + #fixing the y axis labels
+  facet_wrap(~ sports, strip.position = "bottom") + #facet wrapping by sports
   theme_minimal() +
-  labs(
+  labs( 
     y = "Total expenditure",
     title = "Total Expenditures of Private and Public Universities", 
     subtitle = "On Basketball and Football in 2015-2019"
@@ -353,4 +353,4 @@ ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference),
   theme_minimal()
 ```
 
-The second visualization indicates that private universities spend more on football than public universities, with a noticeable disparity in median expenditure. This implies that half of all public universities allocate less funding to football compared to half of all private universities. However, there are multiple exceptions within the public universities, as some spend more than private universities, which may be attributed to their success in football. Despite the significant difference in the first plot, we found out from this visualization that there are some public universities that spend more on football than private ones. On the other hand, for basketball, there is no significant difference in median expenditure between public and private universities. Nonetheless, public universities have a bit wider range of expenditure on basketball than private universities. Overall, universities tend to allocate more funding to football than basketball.
+The second visualization indicates that private universities spend more on football than public universities, with a noticeable difference in median expenditure. This implies that half of all public universities allocate less funding to football compared to half of all private universities. However, there are multiple exceptions within the public universities, as some spend more than private universities, which may be attributed to their success in football. Despite the significant difference in the first plot, we found out from this visualization that there are some public universities that spend more on football than private ones. On the other hand, for basketball, there is no significant difference in median expenditure between public and private universities. Nonetheless, public universities have a bit wider range of expenditure on basketball than private universities. Overall, universities tend to allocate more funding to football than basketball.
