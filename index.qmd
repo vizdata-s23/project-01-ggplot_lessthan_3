@@ -30,15 +30,75 @@ After investigating the differences in revenue and expenditure for men and women
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
-
-
 ```{r}
-#| label: Q1-plot2-data-wrangling
-#| message: false
 library(tidyverse)
 library(plyr)
 library(patchwork)
 sports <- read.csv("data/data.csv")
+
+mens_rev <- sports %>%
+  drop_na(rev_men) %>%
+  group_by(year) %>%
+  summarise(mean_rev_men = mean(rev_men))
+
+womensrev <- sports %>%
+  drop_na(rev_women) %>%
+  group_by(year) %>%
+  summarise(mean_rev_women = mean(rev_women))
+
+mensexp <- sports %>%
+  drop_na(exp_men) %>%
+  group_by(year) %>%
+  summarise(mean_exp_men = mean(exp_men))
+
+womensexp <- sports %>%
+  drop_na(exp_women) %>%
+  group_by(year) %>%
+  summarise(mean_exp_women = mean(exp_women))
+
+plotdf <- mensrev %>%
+  left_join(mensexp) %>%
+  left_join(womensrev) %>%
+  left_join(womensexp)
+
+plotdf_pivoted <- plotdf %>% 
+  pivot_longer(
+    cols = c(mean_rev_men, mean_exp_men, mean_exp_women, mean_rev_women), 
+    names_to = "category", 
+    values_to = "amount"
+  ) %>%
+  mutate(gender = case_when(category == "mean_exp_men" | category == "mean_rev_men" ~ "Mens",
+                            category == "mean_exp_women" | category == "mean_rev_women" ~ "Womens"),
+         type = case_when(category == "mean_exp_men" | category == "mean_exp_women" ~ "Expenditure",
+                            category == "mean_rev_men" | category == "mean_rev_women" ~ "Revenue"))
+
+mensdata <- plotdf_pivoted %>%
+  filter(gender == "Mens")
+womensdata <- plotdf_pivoted %>%
+  filter(gender == "Womens")
+```
+
+```{r}
+ggplot() +
+  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), size = 3) +
+  geom_line(data = mensdata, aes(x = year, y = amount, group = year), linetype = "dashed", color = "#F8766D") +
+  geom_line(data = womensdata, aes(x = year, y = amount, group = year), linetype = "dashed", 
+            color = "#619CFF") +
+  scale_y_continuous(labels = label_dollar(suffix = "K", scale = 1e-3)) +
+  labs(title = "Average college sports revenue and expenditure",
+       subtitle = "By gender",
+       y = "",
+       x = "Year",
+       color = "Gender",
+       shape = "Type") +
+  theme_minimal()  +
+  theme(legend.position = "top")
+```
+
+```{r}
+#| label: Q1-plot2-data-wrangling
+#| message: false
+
 # filter out NA values
 sports_mini = sports |>
   filter(!is.na(exp_men), !is.na(exp_women), !is.na(rev_men), !is.na(rev_women)) 
