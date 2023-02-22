@@ -1,7 +1,7 @@
 ---
-title: "Project title"
+title: "Collegiate Sports Budget Analysis"
 subtitle: "STA/ISS 313 - Project 1"
-author: "Team Name"
+author: "ggplot <3"
 format: html
 editor: visual
 ---
@@ -16,6 +16,22 @@ editor: visual
 
 (1-2 paragraphs): Brief introduction to the dataset. You may repeat some of the information about the dataset provided in the introduction to the dataset on the TidyTuesday repository, paraphrasing on your own terms. Imagine that your project is a standalone document and the grader has no prior knowledge of the dataset.
 
+```{r}
+#| label: load packages
+
+library(tidyverse)
+library(plyr)
+library(patchwork)
+library(janitor)
+library(scales)
+```
+
+```{r}
+#| label: load data
+
+sports <- read.csv("data/data.csv")
+```
+
 ## Question 1: Title that relates to the question you're answering
 
 ### Introduction
@@ -27,11 +43,6 @@ After investigating the differences in revenue and expenditure for men and women
 ### Analysis
 
 ```{r}
-library(tidyverse)
-library(plyr)
-library(patchwork)
-sports <- read.csv("data/data.csv")
-
 sports %>%
   drop_na(rev_men) %>%
   group_by(year) %>%
@@ -260,10 +271,6 @@ Public universities tend to outperform private universities in football games. N
 ### Analysis
 
 ```{r q2 oart 1 vis}
-library(tidyverse)
-library(janitor)
-library(scales)
-
 #load data 
 sports <- read.csv("data/data.csv")
 
@@ -318,7 +325,6 @@ ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference),
 ```
 
 ```{r}
-library(scales)
 #| label: Question 2 Part 2 data wrangling
 q2_2 <- sports %>% 
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
