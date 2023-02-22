@@ -51,7 +51,7 @@ sports <- read.csv("data/data.csv")
 
 Our data comes from the Equity in Athletics Data Analysis
 
-The data includes information on every college sports program from 2015-2019, including expendinture and revenue generated from different sports
+The data includes information on every college sports program from 2015-2019, including expenditure and revenue generated from different sports
 
 ## Question 1
 
