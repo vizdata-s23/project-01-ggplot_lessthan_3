@@ -188,9 +188,69 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
 plot1 
 ```
 
-## Code
+## Question 2
 
--   or bullet points
+```{r}
+#| label: Q2-plot1-visualization
+#| message: false
+#| echo: false
+#| layout-ncol: 2
+library(tidyverse)
+library(janitor)
+library(scales)
+
+#load data 
+sport_data <- read.csv("data/data.csv")
+
+#filter to get d1-FBS schools
+class_sports<- sport_data |> 
+  filter(classification_code== 1) 
+
+#group based on sport and whtehr or not private or public and calculate the mean expenditure over the 5 years for each sport 
+d1_priv_pub <- class_sports|> 
+  group_by(sports, sector_name) |> 
+  mutate(mean_exp = mean(total_exp_menwomen, na.rm = TRUE)) |> 
+  ungroup()
+
+#get distinct columns for each sport and clean data set setting the mean expenditure to negative for the direciton of the bidirectional bar chart
+priv_pub <- d1_priv_pub |>  
+  filter(year == 2015) |>  
+  select(sports, mean_exp, sector_name) |> 
+  distinct() |> 
+  mutate(mean_exp = ifelse(sector_name == "Public, 4-year or above", -mean_exp,
+                           mean_exp)) 
+#create a vector of the sports I want to remove from data 
+rem <- c("Track and Field, Indoor", "Squash", "Track and Field, X-Country",
+         "Track and Field, Outdoor", "Other Sports",
+         "Synchronized Swimming", "Diving",
+         "Bowling", "Sailing", "Skiing", "Rifle", "Equestrian")
+
+#clean and pivot wider code to get single column for sports with columns for the mean expenditre and difference for public and private school mean expenditure
+pivot_priv <- priv_pub |> 
+  select(mean_exp, sector_name, sports) |>  
+  pivot_wider(names_from = sector_name,
+              values_from = mean_exp) |> 
+  clean_names() |>  
+  mutate(difference = public_4_year_or_above + 
+           private_nonprofit_4_year_or_above,
+         difference_abs = abs(difference)) |> 
+  mutate(out_spend = ifelse(difference >0, "Private", "Public")) %>% 
+  filter(!(sports %in% rem))
+
+#create visualizaton of bidirectionla bar chart
+ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference), 
+                       fill = out_spend))+
+  geom_bar(stat= "identity")+
+    scale_x_continuous(labels = dollar_format(scale = 1e-6, prefix = "$", 
+                                            suffix = "M"))+
+  labs(x = "Difference in Mean Expenditure",
+       y = "Sport",
+       fill = "Bigger Spender?",
+       title = "Bidirectional Bar Chart of Difference in Mean Expenditure 
+       for Public and Private D1-FBS Schools")+
+  scale_fill_viridis_d()+
+  theme_minimal()
+```
 
 ::: columns
 ::: {.column width="50%"}

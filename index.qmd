@@ -36,7 +36,12 @@ library(plyr)
 library(patchwork)
 sports <- read.csv("data/data.csv")
 
-mens_rev <- sports %>%
+sports %>%
+  drop_na(rev_men) %>%
+  group_by(year) %>%
+  summarize(mean_rev_men = mean(rev_men))
+
+mensrev <- sports %>%
   drop_na(rev_men) %>%
   group_by(year) %>%
   summarise(mean_rev_men = mean(rev_men))
