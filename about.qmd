@@ -8,5 +8,5 @@ This project was developed by **ggplot\<3** For [STA/ISS 313: Advanced Data Visu
 
 -   Thomas Mande: Senior majoring in public policy from Bethesda, Maryland.
 -   Kelly Huang: Sophomore majoring in computer science and statistics from Oro Valley, AZ
--   Duulgun Nyamgerel: DKU Senior majoring in data science from Ulaanbaatar, Mongolia.
+-   Dulguun Nyamgerel: DKU Senior majoring in data science from Ulaanbaatar, Mongolia.
 -   John Sarantou: Sophomore majoring in computer science and statistics from Charlotte, NC.

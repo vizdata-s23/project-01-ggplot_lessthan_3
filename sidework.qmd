@@ -1,0 +1,259 @@
+---
+title: "Collegiate Sports Budget Analysis"
+subtitle: "STA/ISS 313 - Spring 2023 - Project 1"
+author: "ggplot<3"
+title-slide-attributes:
+  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
+  data-background-size: stretch
+  data-slide-number: none
+format: revealjs
+editor: visual
+execute:
+  echo: false
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+# Add any additional packages you need to this chunk
+# Remove any packages from this list that you're not using
+library(tidyverse)
+library(tidymodels)
+library(palmerpenguins)
+library(gt)
+```
+
+```{r}
+#| label: setup
+#| include: false
+
+# For better figure resolution
+knitr::opts_chunk$set(
+  fig.retina = 3, 
+  dpi = 300, 
+  fig.width = 7, 
+  fig.asp = 0.618, 
+  out.width = "70%"
+  )
+```
+
+```{r}
+#| label: load-data
+#| include: false
+
+# Load your data here
+sports <- read.csv("data/data.csv")
+```
+
+# Collegiate Sports
+
+## Introduction
+
+-   dataset...
+
+-   `##` sets the start of a new slide
+
+## Question 1
+
+How do spending, revenue, and profit compare for men's and women's college sports, and how (if at all) did that relationship change from 2015 to 2019?
+
+## Revenue and Expenditure by Gender
+
+```{r}
+#| label: Q1-plot1-data-wrangling
+#| message: false
+
+mensrev <- sports %>%
+  drop_na(rev_men) %>%
+  group_by(year) %>%
+  summarise(mean_rev_men = mean(rev_men))
+
+womensrev <- sports %>%
+  drop_na(rev_women) %>%
+  group_by(year) %>%
+  summarise(mean_rev_women = mean(rev_women))
+
+mensexp <- sports %>%
+  drop_na(exp_men) %>%
+  group_by(year) %>%
+  summarise(mean_exp_men = mean(exp_men))
+
+womensexp <- sports %>%
+  drop_na(exp_women) %>%
+  group_by(year) %>%
+  summarise(mean_exp_women = mean(exp_women))
+
+plotdf <- mensrev %>%
+  left_join(mensexp) %>%
+  left_join(womensrev) %>%
+  left_join(womensexp)
+
+plotdf_pivoted <- plotdf %>% 
+  pivot_longer(
+    cols = c(mean_rev_men, mean_exp_men, mean_exp_women, mean_rev_women), 
+    names_to = "category", 
+    values_to = "amount"
+  ) %>%
+  mutate(gender = case_when(category == "mean_exp_men" | category == "mean_rev_men" ~ "Mens",
+                            category == "mean_exp_women" | category == "mean_rev_women" ~ "Womens"),
+         type = case_when(category == "mean_exp_men" | category == "mean_exp_women" ~ "Expenditure",
+                            category == "mean_rev_men" | category == "mean_rev_women" ~ "Revenue"))
+
+mensdata <- plotdf_pivoted %>%
+  filter(gender == "Mens")
+womensdata <- plotdf_pivoted %>%
+  filter(gender == "Womens")
+```
+
+```{r}
+#| label: Q1-plot1-graph
+ggplot() +
+  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), size = 3) +
+  geom_line(data = mensdata, aes(x = year, y = amount, group = year), linetype = "dashed", color = "#F8766D") +
+  geom_line(data = womensdata, aes(x = year, y = amount, group = year), linetype = "dashed", 
+            color = "#619CFF") +
+  scale_y_continuous(labels = label_dollar(suffix = "K", scale = 1e-3)) +
+  labs(title = "College spend much more on, and earn much more from, men's sports",
+       y = "Mean Annual Spending/Revenue",
+       x = "Year",
+       color = "Gender",
+       shape = "Type") +
+  theme_minimal()  +
+  theme(legend.position = "top")
+```
+
+## Profit vs Expenditure: Women
+
+```{r}
+#| label: Q1-plot2-data-wrangling
+#| message: false
+#| echo: false
+library(tidyverse)
+library(patchwork)
+
+# filter out NA values
+sports_mini = sports |>
+  filter(!is.na(exp_men), !is.na(exp_women), !is.na(rev_men), !is.na(rev_women)) 
+
+# pivot to create a gender column
+sports_pivot <- sports_mini |>
+  pivot_longer(
+    cols = c("exp_men", "exp_women", "rev_men", "rev_women"),
+    names_to = c("type_money", "gender"),
+    values_to = c("amount"),
+    names_sep = "_"
+  )
+
+# filter for only observations with year as 2015
+sports_pivot <- sports_pivot |>
+  filter(year == 2015) 
+
+# pivot wider to create a separate column for revenue and expenditure
+sports_pivot <- sports_pivot |>
+  pivot_wider(
+    names_from = type_money,
+    values_from = amount
+  )
+
+# create a profit variable
+sports_pivot <- sports_pivot |>
+  mutate(
+    profit = rev - exp
+  )
+
+# create separate data frame for only women
+sports_pivot_women <- sports_pivot |>
+  filter(gender == "women") 
+
+# mutate sports with values Basketball or Other
+sports_pivot_women <- sports_pivot_women |>
+  filter(profit < 15000000) |>
+  mutate(
+    sports =
+      case_when(
+        sports == "Basketball" ~ "Basketball",
+        TRUE ~ "Other"
+      )
+  ) 
+
+# create separate data frame for only men
+sports_pivot_men <- sports_pivot |>
+  filter(gender == "men") 
+
+# mutate sports with values Basketball or Other
+sports_pivot_men <- sports_pivot_men |>
+  filter(profit < 15000000) |>
+  mutate(
+    sports =
+      case_when(
+        sports == "Basketball" ~ "Basketball",
+        TRUE ~ "Other"
+      )
+  ) 
+
+cors <- plyr::ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
+
+# scatter plot for women
+plot1 <- ggplot(sports_pivot_women, aes(x = exp, y = profit, color = sports)) +
+  geom_point(alpha = 0.85) +
+  geom_smooth(method = "lm", color = "black") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Relationship Between Profit and Expenditure for Basketball and Other Sports\nfor Women",
+    subtitle = "in 2015",
+    x = "Expenditure ($)",
+    y = "Profit ($)",
+    color = "Sport Type"
+  ) +
+  annotate(geom = "label", x = 0.5e+06, y = 3000000, label = "r = -0.57", size = 5,
+           color = "black", fontface = 2) +
+  annotate(geom = "text", x = 8e+06, y = 500000, label = "Profit = 0") +
+  coord_cartesian(clip = "off", ylim = c(-5100000, 4000000)) +
+  scale_y_continuous(breaks = c(-5000000, -2500000, 0, 2500000),
+                     labels = c("$-5M", "$-2.5M", "$0M", "$2.5M")) +
+  scale_x_continuous(breaks = c(0e+00, 2e+06, 4e+06, 6e+06),
+                     labels = c("$0M", "$2M", "$4M", "$6M")) +
+  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  theme_minimal() + 
+  theme(
+    legend.position = c(0.9, 0.9),
+    legend.box.background = element_rect(fill = "white", color = "black")
+  )
+
+# scatter plot for men
+plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
+  geom_point(alpha = 0.86) +
+  geom_smooth(method = "lm", color = "black") +
+  geom_hline(yintercept = 0, linetype = 2) +
+  labs(
+    title = "Relationship Between Profit and Expenditure for Basketball and Other Sports\nfor Men",
+    subtitle = "in 2015",
+    x = "Expenditure ($)",
+    y = "Profit ($)",
+    color = "Sport Type"
+  ) +
+  annotate(geom = "label", x = 1.2e+06, y = 2.5e+07, label = "r = 0.54", size = 5,
+           color = "black", fontface = 2) +
+  annotate(geom = "text", x = 2e+07, y = 1.5e+06, label = "Profit = 0") +
+  coord_cartesian(clip = "off", ylim = c(-5000000, 30000000)) +
+  scale_x_continuous(breaks = c(0.0+00, 5.0e+06, 1.0e+07, 1.5e+07), 
+                     labels = c("$0M", "$5M", "$10M", "$15M")) +
+  scale_y_continuous(breaks = c(0.0+00, 1e+07, 2e+07, 3e+07, 4e+07), 
+                     labels = c("$0M", "$10M", "$20M", "$30M", "$40M")) +
+  scale_color_manual(values = c("#8E7DBE", "#D88C9A")) +
+  theme_minimal() +
+  theme(
+    legend.position = c(0.9, 0.9),
+    legend.box.background = element_rect(fill = "white", color = "black")
+  )
+
+plot1 
+```
+
+## Profit vs Expenditure: Men
+
+```{r}
+plot2
+```
+---

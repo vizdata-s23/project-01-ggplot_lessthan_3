@@ -1,0 +1,20 @@
+{
+  "hash": "7c38f06f91c52158ae84c4172acade6a",
+  "result": {
+    "markdown": "---\ntitle: \"Collegiate Sports Budget Analysis\"\nsubtitle: \"STA/ISS 313 - Spring 2023 - Project 1\"\nauthor: \"ggplot<3\"\ntitle-slide-attributes:\n  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg\n  data-background-size: stretch\n  data-slide-number: none\nformat: revealjs\neditor: visual\nexecute:\n  echo: false\n---\n\n\n\n\n\n\n\n\n# Collegiate Sports\n\n## Introduction\n\n-   dataset...\n\n-   `##` sets the start of a new slide\n\n## Question 1\n\nHow do spending, revenue, and profit compare for men's and women's college sports, and how (if at all) did that relationship change from 2015 to 2019?\n\n## Revenue and Expenditure by Gender\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n::: {.cell-output-display}\n![](sidework_files/figure-revealjs/Q1-plot1-graph-1.png){width=70%}\n:::\n:::\n\n\n## Profit vs Expenditure: Women\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](sidework_files/figure-revealjs/Q1-plot2-data-wrangling-1.png){width=70%}\n:::\n:::\n\n\n## Profit vs Expenditure: Men\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](sidework_files/figure-revealjs/unnamed-chunk-7-1.png){width=70%}\n:::\n:::\n\n---\n",
+    "supporting": [
+      "sidework_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-after-body": [
+        "\n<script>\n  // htmlwidgets need to know to resize themselves when slides are shown/hidden.\n  // Fire the \"slideenter\" event (handled by htmlwidgets.js) when the current\n  // slide changes (different for each slide format).\n  (function () {\n    // dispatch for htmlwidgets\n    function fireSlideEnter() {\n      const event = window.document.createEvent(\"Event\");\n      event.initEvent(\"slideenter\", true, true);\n      window.document.dispatchEvent(event);\n    }\n\n    function fireSlideChanged(previousSlide, currentSlide) {\n      fireSlideEnter();\n\n      // dispatch for shiny\n      if (window.jQuery) {\n        if (previousSlide) {\n          window.jQuery(previousSlide).trigger(\"hidden\");\n        }\n        if (currentSlide) {\n          window.jQuery(currentSlide).trigger(\"shown\");\n        }\n      }\n    }\n\n    // hookup for slidy\n    if (window.w3c_slidy) {\n      window.w3c_slidy.add_observer(function (slide_num) {\n        // slide_num starts at position 1\n        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);\n      });\n    }\n\n  })();\n</script>\n\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
