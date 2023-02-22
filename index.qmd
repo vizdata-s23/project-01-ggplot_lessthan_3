@@ -286,7 +286,7 @@ sports <- read.csv("data/data.csv")
 class_sports<- sports |> 
   filter(classification_code== 1) 
 
-#group based on sport and whtehr or not private or public and calculate the mean expenditure over the 5 years for each sport 
+#group based on sport and whether or not private or public and calculate the mean expenditure over the 5 years for each sport 
 d1_priv_pub <- class_sports|> 
   group_by(sports, sector_name) |> 
   mutate(mean_exp = mean(total_exp_menwomen, na.rm = TRUE)) |> 
@@ -314,10 +314,10 @@ pivot_priv <- priv_pub |>
   mutate(difference = public_4_year_or_above + 
            private_nonprofit_4_year_or_above,
          difference_abs = abs(difference)) |> 
-  mutate(out_spend = ifelse(difference >0, "Private", "Public")) %>% 
+  mutate(out_spend = ifelse(difference >0, "Private", "Public")) |> 
   filter(!(sports %in% rem))
 
-#create visualizaton of bidirectionla bar chart
+#create visualization of bidirectional bar chart
 ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference), 
                        fill = out_spend))+
   geom_bar(stat= "identity")+
