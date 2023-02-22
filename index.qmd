@@ -254,11 +254,15 @@ Interestingly, the relationship between profit and expenditure for basketball is
 
 (1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g. boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
 
+Public universities tend to outperform private universities in football games. Nevertheless, based on the initial visualization, it was discovered that private universities allocate more funds for this sport than their public counterparts. Consequently, we conducted further analysis on the data distribution of the two major university sports, namely basketball and football. These sports were chosen due to their large number of data points. To display the distributions, we employed box plots that were facet-wrapped by sports and color-coded according to the type of university, whether public or private.
+
 ### Analysis
 
 (2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
 
 ```{r}
+library(scales)
+# Question 2 Part 2 data wrangling
 q2 <- sports %>% 
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
   select(sports, sector_name, total_exp_menwomen) %>% 
@@ -267,6 +271,7 @@ q2 <- sports %>%
 ```
 
 ```{r}
+# Question 2 Part 2 data visualization
 ggplot(
   q2, 
   aes(y = total_exp_menwomen, color = sector_name)
