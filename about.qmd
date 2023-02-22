@@ -4,9 +4,9 @@ format: html
 editor: visual
 ---
 
-This project was developed by **\[team name\]** For [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
+This project was developed by **ggplot\<3** For [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
 
--   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Thomas Mande: Senior majoring in public policy from Bethesda, Maryland.
+-   Kelly Huang: Sophomore majoring in computer science and statistics from Oro Valley, AZ
+-   Duulgun Nyamgerel: DKU Senior majoring in data science from Ulaanbaatar, Mongolia.
+-   John Sarantou: Sophomore majoring in computer science and statistics from Charlotte, NC.
