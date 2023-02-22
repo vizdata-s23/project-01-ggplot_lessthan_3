@@ -58,7 +58,7 @@ sports <- read.csv("data/data.csv")
 
 How do spending, revenue, and profit compare for men's and women's college sports, and how (if at all) did that relationship change from 2015 to 2019?
 
-## Profit vs Expenditure: Women 
+## Profit vs Expenditure: Women
 
 ```{r}
 #| label: Q1-plot2-data-wrangling
@@ -186,7 +186,7 @@ plot2 <- ggplot(sports_pivot_men, aes(x = exp, y = profit, color = sports)) +
 plot1 
 ```
 
-## Profit vs Expenditure: Men 
+## Profit vs Expenditure: Men
 
 ```{r}
 plot2

@@ -4,7 +4,15 @@ subtitle: "STA/ISS 313 - Project 1"
 author: "ggplot <3"
 format: html
 editor: visual
+execute: 
+  echo: false
+  warning: false
 ---
+
+```{r}
+#| label: load data
+sports <- read.csv("data/data.csv")
+```
 
 ## Abstract
 
@@ -14,7 +22,7 @@ editor: visual
 
 ## Introduction
 
-This data on collegiate sports budgets comes from Equity in Athletics Data Analysis. It has \`r nrow(sports)\` rows and \`r ncol(sports)\` columns, including numeric and categorical variables. The dataset has information on most colleges in the US, regardless of sports division, and consists of metrics such as revenue and expenditure for each sport at the school from 2015-2019. We chose the dataset because it has a large number of variables that will be interesting to analyze, and because, as college sports fanatics, we think the topic of collegiate sports budgets is interesting, relevant to us, and worthy of exploration. The variables we are primarily concerned with are \`exp_men\`, the school expenditure on men's sports, \`rev_men\`, revenue generated from men's sports for the school, \`exp_women\`, the school expenditure on women's sports, \`rev_woman,\` revenue generated from women's sports for the school, \`total_exp_menwomen\`, the total expenditure on men and women's teams for a certain sport, \`year\`, year of athletics, and \`sector_name,\` school type like "Private 4 year" for example.
+This data on collegiate sports budgets comes from Equity in Athletics Data Analysis. It has `r nrow(sports)` rows and `r ncol(sports)` columns, including numeric and categorical variables. The dataset has information on most colleges in the US, regardless of sports division, and consists of metrics such as revenue and expenditure for each sport at the school from 2015-2019. We chose the dataset because it has a large number of variables that will be interesting to analyze, and because, as college sports fanatics, we think the topic of collegiate sports budgets is interesting, relevant to us, and worthy of exploration. The variables we are primarily concerned with are `exp_men`, the school expenditure on men's sports, `rev_men`, revenue generated from men's sports for the school, `exp_women`, the school expenditure on women's sports, `rev_woman,` revenue generated from women's sports for the school, `total_exp_menwomen`, the total expenditure on men and women's teams for a certain sport, `year`, year of athletics, and `sector_name`, school type like "Private 4 year" for example.
 
 ```{r}
 #| label: load packages
@@ -24,13 +32,9 @@ library(tidyverse)
 library(patchwork)
 library(janitor)
 library(scales)
+library(knitr)
 ```
 
-```{r}
-#| label: load data
-
-sports <- read.csv("data/data.csv")
-```
 
 ## Question 1: Title that relates to the question you're answering
 
@@ -45,10 +49,6 @@ After investigating the differences in revenue and expenditure for men and women
 ```{r}
 #| label: Q1-plot1-data-wrangling
 #| message: false
-sports %>%
-  drop_na(rev_men) %>%
-  group_by(year) %>%
-  summarize(mean_rev_men = mean(rev_men))
 
 mensrev <- sports %>%
   drop_na(rev_men) %>%
@@ -150,7 +150,9 @@ sports_pivot_women <- sports_pivot |>
 
 # spotlight extreme outlier in women's data frame so we can remove it
 sports_pivot_women |>
-  filter(profit > 15000000)
+  filter(profit > 15000000) %>%
+  select(year, institution_name, sports, profit) %>%
+  kable(col.names = c("Year", "Institution", "Sport", "Profit"))
 
 # mutate sports with values Basketball or Other
 sports_pivot_women <- sports_pivot_women |>
@@ -250,6 +252,8 @@ plot2
 ```
 
 ### Discussion
+
+This first chart reveals several key finding about how spending and revenue differ for men's and women’s college sports. First, men's sports are, on average both spending and earning far more than women's sports. Men's sports earn on average about x more than women's sports, and spend about y more. This gap was persistent from 2015 to 2019, in fact even slightly growing across this time period. We were surprised to see that the gap was this dramatic, especially given Title IX spending rules; we were also surprised that the gap grew during a time period where so many people have been focused on equity in sports. A second finding evident in this chart is that men's sports, on average, earn more than they spend, while the opposite is true for women's sports. This positive gap in earning is also greater in men's sports than the respective negative gap in earning for women's, a finding which is also consistent across years.
 
 From the two graphs, we can see that the relationship between profit and expenditure differs greatly for men and women. For men, there appears to be a moderate positive relationship between profit and expenditure while for women there appears to be a moderate negative relationship between profit and expenditure. This trend is probably because although colleges spend millions of dollars in funding for women collegiate sport programs, these women collegiate sport programs do not generate enough revenue for positive profit. This is most likely due to women collegiate programs obtaining less publicity in corporate sponsorship and media viewership, according to the NPR article on unequal profits. It is reasonably expected that the relationship between profit and expenditure is positive as shown in men's collegiate sports programs; however, this is not the case for women collegiate sports programs since external uncontrollable factors such as media viewership and corporate sponsorship influence how much revenue and thus profit is generated from advertisement, ticket sales, and sponsorships.
 
