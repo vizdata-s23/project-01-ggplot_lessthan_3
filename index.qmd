@@ -18,9 +18,9 @@ editor: visual
 
 ```{r}
 #| label: load packages
+#| message: false
 
 library(tidyverse)
-library(plyr)
 library(patchwork)
 library(janitor)
 library(scales)
@@ -43,6 +43,8 @@ After investigating the differences in revenue and expenditure for men and women
 ### Analysis
 
 ```{r}
+#| label: Q1-plot1-data-wrangling
+#| message: false
 sports %>%
   drop_na(rev_men) %>%
   group_by(year) %>%
@@ -91,6 +93,7 @@ womensdata <- plotdf_pivoted %>%
 ```
 
 ```{r}
+#| label: Q1-plot1-graph
 ggplot() +
   geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), size = 3) +
   geom_line(data = mensdata, aes(x = year, y = amount, group = year), linetype = "dashed", color = "#F8766D") +
@@ -181,7 +184,7 @@ sports_pivot_men <- sports_pivot_men |>
 #| label: Q1-plot2-correlation-coeff
 # calculate the correlation coefficient for each gender and create a data frame
 # to store the values
-cors <- ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
+cors <- plyr::ddply(sports_pivot, c("gender"), summarise, cor = round(cor(exp, profit), 2))
 ```
 
 ```{r}
@@ -270,7 +273,8 @@ Public universities tend to outperform private universities in football games. N
 
 ### Analysis
 
-```{r q2 oart 1 vis}
+```{r}
+#| label: Q2-part-1-vis
 #load data 
 sports <- read.csv("data/data.csv")
 
@@ -325,7 +329,7 @@ ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference),
 ```
 
 ```{r}
-#| label: Question 2 Part 2 data wrangling
+#| label: Question-2-Part-2-data-wrangling
 q2_2 <- sports %>% 
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
   select(sports, sector_name, total_exp_menwomen) %>% 
@@ -335,7 +339,7 @@ q2_2 <- sports %>%
 ```
 
 ```{r}
-#| label: Question 2 Part 2 data visualization
+#| label: Question-2-Part-2-data-visualization
 
 ggplot(
   q2_2, 
