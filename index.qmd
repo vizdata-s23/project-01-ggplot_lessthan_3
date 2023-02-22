@@ -53,6 +53,7 @@ After investigating the differences in revenue and expenditure for men and women
 #| label: Q1-plot1-data-wrangling
 #| message: false
 
+#created sub-datasets of revenue and expenditure for each gender
 mensrev <- sports |>
   drop_na(rev_men) |>
   group_by(year) |>
@@ -73,11 +74,13 @@ womensexp <- sports |>
   group_by(year) |>
   summarise(mean_exp_women = mean(exp_women))
 
+#joined sub data-sets into full dataframe to plot
 plotdf <- mensrev |>
   left_join(mensexp) |>
   left_join(womensrev) |>
   left_join(womensexp)
 
+#pivoted new df to prepare for plotting
 plotdf_pivoted <- plotdf |> 
   pivot_longer(
     cols = c(mean_rev_men, mean_exp_men, mean_exp_women, mean_rev_women), 
@@ -94,6 +97,7 @@ plotdf_pivoted <- plotdf |>
                  category == "mean_rev_men" | category == "mean_rev_women" ~ "Revenue")
          )
 
+#created separate mens and womens datasets for plot layers
 mensdata <- plotdf_pivoted |>
   filter(gender == "Mens")
 womensdata <- plotdf_pivoted |>
@@ -103,6 +107,7 @@ womensdata <- plotdf_pivoted |>
 ```{r}
 #| label: Q1-plot1-graph
 
+#create first visualization
 ggplot() +
   geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type,
                                         color = gender), 
