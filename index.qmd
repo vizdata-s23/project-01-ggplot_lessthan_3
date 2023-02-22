@@ -94,20 +94,21 @@ womensdata <- plotdf_pivoted %>%
 
 ```{r}
 #| label: Q1-plot1-graph
+
 ggplot() +
-  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), size = 3) +
-  geom_line(data = mensdata, aes(x = year, y = amount, group = year), linetype = "dashed", color = "#F8766D") +
+  geom_point(data = plotdf_pivoted, aes(x = year, y = amount, shape = type, color = gender), 
+             size = 3) +
+  geom_line(data = mensdata, aes(x = year, y = amount, group = year), 
+            linetype = "dashed", color = "#F8766D") +
   geom_line(data = womensdata, aes(x = year, y = amount, group = year), linetype = "dashed", 
-            color = "#619CFF") +
+            color = "#00BFC4") +
   scale_y_continuous(labels = label_dollar(suffix = "K", scale = 1e-3)) +
-  labs(title = "Average college sports revenue and expenditure",
-       subtitle = "By gender",
+  labs(title = "Colleges spend much more on, and earn much more from, men's sports",
        y = "",
        x = "Year",
        color = "Gender",
        shape = "Type") +
-  theme_minimal()  +
-  theme(legend.position = "top")
+  theme_minimal()  
 ```
 
 ```{r}
@@ -267,11 +268,11 @@ Interestingly, the relationship between profit and expenditure for basketball is
 
 We are interested in seeing how the mean expenditure per sport of Division I-FBS schools from 2015-19 differs for public and private universities. The Division I-FBS is the top division in college sports that at the time of our data being collected, consisted of 126 universities, 18 private and 108 public. The parts of our data that are necessary to answer this question are the sport, whether or not a Division I-FBS school is public or private, and difference in the mean expenditure for public and private schools over the years for each respective sport.
 
-We are interested in this question as in general, private schools have a larger endowment than public schools, meaning they have more money to spend on athletics. On the other hand, public schools are larger, have a larger fan base, consistently outperform private schools in football, and receive state subsidized funding allowing them to possibly spend more on sports. With both schools having a possible advantage in expenditure spending, we are interested to see which schools spend more money on their athletics programs.
+This question intrigues us question as in general, private schools have a frequently have larger endowments than public schools, meaning they have more money to spend on athletics. On the other hand, public schools are larger, have a larger fan base, consistently outperform private schools in football, and receive state subsidized funding allowing them to possibly spend more on sports. With both schools having a possible advantage in expenditure spending, we are interested to see which schools spend more money on their athletics programs.
 
 ### Approach
 
-The first plot we are going to make to answer this question is a bidirectional bar chart plotting the difference in mean expenditure for public and private schools for for each respective sport. We plan to have sport on the y-axis and the difference in expenditure on the x-axis. A bidirectional bar chart is the best chart to show the difference in mean expenditure per sport as it will clearly show which sports private schools spend more money on and which sports public schools spend more money on. It will clearly show this relationship as the bars will point in opposite directions depending on whether private or public schools spend more. Furthermore, this chart will also by how much the mean expenditure is different between the private and public schools for each sport, giving us a good indication on whether or not there are simply minor or major spending differences. This chart will also allow us to see the general trend in spending differences and the range that spending differences gernally fall between.
+The first plot we are going to make to answer this question is a bidirectional bar chart plotting the difference in mean expenditure for public and private schools for for each respective sport. We plan to have sport on the y-axis and the difference in expenditure on the x-axis. A bidirectional bar chart is the best chart to show the difference in mean expenditure per sport as it will clearly show which sports private schools spend more money on and which sports public schools spend more money on. It will clearly show this relationship as the bars will point in opposite directions depending on whether private or public schools spend more. Furthermore, this chart will also show how much the mean expenditure is different between the private and public schools for each sport, giving us a good indication on whether or not there are simply minor or major spending differences. This chart will also allow us to see the general trend in spending differences and the range that spending differences genrally fall between.
 
 Public universities tend to outperform private universities in football games. Nevertheless, based on the initial visualization, it was discovered that private universities allocate more funds for this sport than their public counterparts. Consequently, we conducted further analysis on the data distribution of the two major university sports, namely basketball and football. These sports were chosen due to their large number of data points. To display the distributions, we employed box plots that were facet-wrapped by sports and color-coded according to the type of university, whether public or private.
 
@@ -338,7 +339,8 @@ q2_2 <- sports %>%
   filter(classification_code == 1 & (sports == "Basketball" | sports == "Football") ) %>% 
   select(sports, sector_name, total_exp_menwomen) %>% 
   #renaming sector name values, so thatt it will look nice on the graph
-  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", "Public, 4-year or above" = "Public")) 
+  mutate(sector_name = recode(sector_name, "Private nonprofit, 4-year or above" = "Private", 
+                              "Public, 4-year or above" = "Public")) 
 
 ```
 
