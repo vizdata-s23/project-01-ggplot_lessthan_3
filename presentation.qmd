@@ -323,7 +323,6 @@ ggplot(pivot_priv, aes(x = difference, y = fct_reorder(sports, difference),
        fill = "Bigger Spender?",
        title = "Bidirectional Bar Chart of Difference in Mean Expenditure 
        for Public and Private D1-FBS Schools")+
-  scale_fill_viridis_d()+
   theme_minimal()
 ```
 
